@@ -1,38 +1,59 @@
 import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
 
 public class Permutations {
-	public static int factorial(int len) {
-		int out = len;
-		while (len > 1) {
-			len--;
-			out = out * len;
-		}
-		return out;
 
-	}
-
+	public  static int factorial(int n) 
+    { 
+        if (n == 0 || n == 1) 
+          return 1; 
+        
+          
+        return n*factorial(n-1); 
+    }
+	
 	public static void main(String[] args) throws IOException {
+		
 		Scanner scan = new Scanner(new File("permutations.dat"));
-		int baseCount = scan.nextInt();
+		
+		int numCases = scan.nextInt();
 		scan.nextLine();
-		while (baseCount-- > 0) {
-			char[] input = scan.nextLine().trim().toCharArray();
-			int numerator = factorial(input.length);
-			Map<Character, Integer> map = new HashMap();
-			for (char c : input) {
-				if (!map.containsKey(c)) {
-					map.put(c, 1);
-				} else
-					map.put(c, map.get(c) + 1);
+		
+		while(numCases-- > 0) {
+			
+			String str = scan.nextLine();
+			int length = str.length();
+			String[] arr = str.split("");
+			ArrayList<String> set = new ArrayList<String>();
+			
+			for(int i = 0; i < arr.length; i++) {
+				set.add(arr[i]);
 			}
-			int denominator = 1;
-			for (Entry<Character, Integer> ent : map.entrySet()) {
-				denominator = factorial(ent.getValue()) * denominator;
+			
+			Collections.sort(set);
+			
+			for (int i = 0; i < set.size(); i++) {
+				arr[i] = set.get(i);
 			}
-			System.out.println(numerator / denominator);
+			int count = 0;
+			
+			for (int i = 0; i < arr.length-1; i++) {
+				if(arr[i].equals(arr[i+1])) {
+					count++;
+				}
+			}
+			;
+			
+			int ans = factorial(length)/(factorial(length-(count+1)));
+			if (count == 0) {
+				ans = factorial(ans);
+			}
+			System.out.println(ans);
+		
+			
+			
 		}
+		
 
 	}
 
